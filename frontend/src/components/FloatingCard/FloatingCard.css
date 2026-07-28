@@ -1,0 +1,41 @@
+.floating-card{
+
+    position:absolute;
+
+    width:220px;
+
+    padding:18px;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,.15);
+
+    backdrop-filter:blur(20px);
+
+    color:white;
+
+    box-shadow:0 20px 40px rgba(0,0,0,.25);
+}
+
+.floating-card h3{
+
+    font-size:22px;
+
+    margin-bottom:10px;
+}
+
+.floating-card p{
+
+    color:#D6E2FF;
+
+    margin-bottom:10px;
+}
+
+.floating-card span{
+
+    font-size:24px;
+
+    font-weight:700;
+
+    color:#FFD54A;
+}
