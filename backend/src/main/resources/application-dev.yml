@@ -1,0 +1,14 @@
+# DEV ONLY.
+# Module 2 (Authentication) is not built yet, so there is no JWT to identify
+# the caller. While this profile is active, DevAuthFilter reads an
+# "X-User-Id" request header and treats it as the logged-in user, so the cart
+# endpoints can be exercised in Postman today.
+# Delete DevAuthFilter (and this block) the moment Module 2 lands.
+emart:
+  dev:
+    fake-auth-enabled: true
+
+logging:
+  level:
+    com.example: DEBUG
+    org.hibernate.SQL: DEBUG
