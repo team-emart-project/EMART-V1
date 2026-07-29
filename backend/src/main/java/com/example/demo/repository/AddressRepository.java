@@ -8,6 +8,6 @@ import com.example.demo.entity.Address;
 
 public interface AddressRepository extends JpaRepository<Address, Integer> {
 
-    List<Address> findByUserUserId(Integer userId);
+    List<Address> findByUserUserId(Long userId);
 
 }
