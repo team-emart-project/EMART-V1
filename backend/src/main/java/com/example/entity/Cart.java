@@ -2,7 +2,6 @@ package com.example.entity;
 
 import com.example.enums.CartStatus;
 import jakarta.persistence.*;
-import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -17,11 +16,6 @@ import java.util.List;
  */
 @Entity
 @Table(name = "cart")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Cart {
 
     @Id
@@ -42,7 +36,6 @@ public class Cart {
      * deletes the row, so "clear cart" is a single operation on the parent.
      */
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @Builder.Default
     private List<CartItem> items = new ArrayList<>();
 
     @CreationTimestamp
@@ -53,6 +46,19 @@ public class Cart {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    public Cart() {
+    }
+
+    public Cart(Integer cartId, User user, CartStatus status, List<CartItem> items,
+                LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.cartId = cartId;
+        this.user = user;
+        this.status = status;
+        this.items = items != null ? items : new ArrayList<>();
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     /** Keeps both sides of the relationship in sync. */
     public void addItem(CartItem item) {
         items.add(item);
@@ -62,5 +68,100 @@ public class Cart {
     public void removeItem(CartItem item) {
         items.remove(item);
         item.setCart(null);
+    }
+
+    public Integer getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(Integer cartId) {
+        this.cartId = cartId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public CartStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CartStatus status) {
+        this.status = status;
+    }
+
+    public List<CartItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<CartItem> items) {
+        this.items = items;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private Integer cartId;
+        private User user;
+        private CartStatus status;
+        private List<CartItem> items = new ArrayList<>();
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+
+        public Builder cartId(Integer cartId) {
+            this.cartId = cartId;
+            return this;
+        }
+
+        public Builder user(User user) {
+            this.user = user;
+            return this;
+        }
+
+        public Builder status(CartStatus status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder items(List<CartItem> items) {
+            this.items = items;
+            return this;
+        }
+
+        public Builder createdAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public Builder updatedAt(LocalDateTime updatedAt) {
+            this.updatedAt = updatedAt;
+            return this;
+        }
+
+        public Cart build() {
+            return new Cart(cartId, user, status, items, createdAt, updatedAt);
+        }
     }
 }

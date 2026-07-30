@@ -1,7 +1,6 @@
 package com.example.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -17,11 +16,6 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "product_master")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class ProductMaster {
 
     @Id
@@ -63,4 +57,174 @@ public class ProductMaster {
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    public ProductMaster() {
+    }
+
+    public ProductMaster(Integer prodId, CategoryMaster category, String prodName, String prodShortDesc,
+                          String prodLongDesc, BigDecimal mrpPrice, BigDecimal cardholderPrice,
+                          Integer pointsToRedeem, String prodImagePath, LocalDateTime createdAt) {
+        this.prodId = prodId;
+        this.category = category;
+        this.prodName = prodName;
+        this.prodShortDesc = prodShortDesc;
+        this.prodLongDesc = prodLongDesc;
+        this.mrpPrice = mrpPrice;
+        this.cardholderPrice = cardholderPrice;
+        this.pointsToRedeem = pointsToRedeem;
+        this.prodImagePath = prodImagePath;
+        this.createdAt = createdAt;
+    }
+
+    public Integer getProdId() {
+        return prodId;
+    }
+
+    public void setProdId(Integer prodId) {
+        this.prodId = prodId;
+    }
+
+    public CategoryMaster getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryMaster category) {
+        this.category = category;
+    }
+
+    public String getProdName() {
+        return prodName;
+    }
+
+    public void setProdName(String prodName) {
+        this.prodName = prodName;
+    }
+
+    public String getProdShortDesc() {
+        return prodShortDesc;
+    }
+
+    public void setProdShortDesc(String prodShortDesc) {
+        this.prodShortDesc = prodShortDesc;
+    }
+
+    public String getProdLongDesc() {
+        return prodLongDesc;
+    }
+
+    public void setProdLongDesc(String prodLongDesc) {
+        this.prodLongDesc = prodLongDesc;
+    }
+
+    public BigDecimal getMrpPrice() {
+        return mrpPrice;
+    }
+
+    public void setMrpPrice(BigDecimal mrpPrice) {
+        this.mrpPrice = mrpPrice;
+    }
+
+    public BigDecimal getCardholderPrice() {
+        return cardholderPrice;
+    }
+
+    public void setCardholderPrice(BigDecimal cardholderPrice) {
+        this.cardholderPrice = cardholderPrice;
+    }
+
+    public Integer getPointsToRedeem() {
+        return pointsToRedeem;
+    }
+
+    public void setPointsToRedeem(Integer pointsToRedeem) {
+        this.pointsToRedeem = pointsToRedeem;
+    }
+
+    public String getProdImagePath() {
+        return prodImagePath;
+    }
+
+    public void setProdImagePath(String prodImagePath) {
+        this.prodImagePath = prodImagePath;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private Integer prodId;
+        private CategoryMaster category;
+        private String prodName;
+        private String prodShortDesc;
+        private String prodLongDesc;
+        private BigDecimal mrpPrice;
+        private BigDecimal cardholderPrice;
+        private Integer pointsToRedeem;
+        private String prodImagePath;
+        private LocalDateTime createdAt;
+
+        public Builder prodId(Integer prodId) {
+            this.prodId = prodId;
+            return this;
+        }
+
+        public Builder category(CategoryMaster category) {
+            this.category = category;
+            return this;
+        }
+
+        public Builder prodName(String prodName) {
+            this.prodName = prodName;
+            return this;
+        }
+
+        public Builder prodShortDesc(String prodShortDesc) {
+            this.prodShortDesc = prodShortDesc;
+            return this;
+        }
+
+        public Builder prodLongDesc(String prodLongDesc) {
+            this.prodLongDesc = prodLongDesc;
+            return this;
+        }
+
+        public Builder mrpPrice(BigDecimal mrpPrice) {
+            this.mrpPrice = mrpPrice;
+            return this;
+        }
+
+        public Builder cardholderPrice(BigDecimal cardholderPrice) {
+            this.cardholderPrice = cardholderPrice;
+            return this;
+        }
+
+        public Builder pointsToRedeem(Integer pointsToRedeem) {
+            this.pointsToRedeem = pointsToRedeem;
+            return this;
+        }
+
+        public Builder prodImagePath(String prodImagePath) {
+            this.prodImagePath = prodImagePath;
+            return this;
+        }
+
+        public Builder createdAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public ProductMaster build() {
+            return new ProductMaster(prodId, category, prodName, prodShortDesc, prodLongDesc, mrpPrice,
+                    cardholderPrice, pointsToRedeem, prodImagePath, createdAt);
+        }
+    }
 }
