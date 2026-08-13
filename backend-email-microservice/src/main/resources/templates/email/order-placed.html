@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title th:text="'Order ' + ${orderNo}">Order confirmation</title>
+</head>
+<!--/*
+    EMAIL HTML, NOT WEB HTML.
+
+    Tables for layout and styles written inline, because that is what mail
+    clients support: Outlook renders with Word's engine, and Gmail strips
+    <style> blocks and most of flexbox/grid with it. A modern stylesheet here
+    would look perfect in a browser and collapse into a column of unstyled
+    text in the one place it has to work.
+
+    Every value below is already formatted by InvoiceRenderer, so this file
+    contains no arithmetic and no currency logic.
+*/-->
+<body style="margin:0; padding:0; background-color:#f4f5f7;
+             font-family:Arial, Helvetica, sans-serif; color:#1f2430;">
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+       style="background-color:#f4f5f7; padding:24px 12px;">
+    <tr>
+        <td align="center">
+
+            <table role="presentation" width="600" cellpadding="0" cellspacing="0"
+                   style="width:600px; max-width:100%; background-color:#ffffff;
+                          border-radius:8px; overflow:hidden;
+                          border:1px solid #e3e6ec;">
+
+                <!-- Header -->
+                <tr>
+                    <td style="background-color:#1f2430; padding:24px 28px;">
+                        <div style="font-size:22px; font-weight:bold; color:#ffffff;"
+                             th:text="${storeName}">e-MART</div>
+                        <div style="font-size:13px; color:#a9b0bd; padding-top:4px;">
+                            Order confirmation &amp; invoice
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Greeting -->
+                <tr>
+                    <td style="padding:28px 28px 8px 28px;">
+                        <div style="font-size:20px; font-weight:bold;">
+                            Thanks, <span th:text="${firstName}">Rishiraj</span>! Your order is placed.
+                        </div>
+                        <p style="font-size:14px; line-height:20px; color:#4a5160; margin:12px 0 0 0;">
+                            We have received your order and it is being prepared.
+                            Your invoice is below — keep it for your records.
+                        </p>
+                    </td>
+                </tr>
+
+                <!-- Order meta -->
+                <tr>
+                    <td style="padding:20px 28px 0 28px;">
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+                               style="background-color:#f7f8fa; border:1px solid #e3e6ec;
+                                      border-radius:6px; font-size:13px;">
+                            <tr>
+                                <td style="padding:12px 16px; color:#6b7280;">Order number</td>
+                                <td style="padding:12px 16px; text-align:right; font-weight:bold;"
+                                    th:text="${orderNo}">ORD-2026-048372</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:0 16px 12px 16px; color:#6b7280;">Order date</td>
+                                <td style="padding:0 16px 12px 16px; text-align:right;"
+                                    th:text="${orderDate}">10 Aug 2026, 02:22 PM</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:0 16px 12px 16px; color:#6b7280;">Order status</td>
+                                <td style="padding:0 16px 12px 16px; text-align:right;"
+                                    th:text="${orderStatus}">PLACED</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:0 16px 12px 16px; color:#6b7280;">Payment status</td>
+                                <td style="padding:0 16px 12px 16px; text-align:right;"
+                                    th:text="${paymentStatus}">PENDING</td>
+                            </tr>
+                            <tr th:if="${membershipNo != null}">
+                                <td style="padding:0 16px 12px 16px; color:#6b7280;">Membership no.</td>
+                                <td style="padding:0 16px 12px 16px; text-align:right;"
+                                    th:text="${membershipNo}">EM-000123</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Items -->
+                <tr>
+                    <td style="padding:24px 28px 0 28px;">
+                        <div style="font-size:15px; font-weight:bold; padding-bottom:10px;">Items</div>
+
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+                               style="font-size:13px; border-collapse:collapse;">
+                            <tr style="background-color:#f7f8fa;">
+                                <th align="left"  style="padding:10px 8px; border-bottom:1px solid #e3e6ec; color:#6b7280; font-weight:normal;">Product</th>
+                                <th align="center" style="padding:10px 8px; border-bottom:1px solid #e3e6ec; color:#6b7280; font-weight:normal;">Qty</th>
+                                <th align="right" style="padding:10px 8px; border-bottom:1px solid #e3e6ec; color:#6b7280; font-weight:normal;">Unit price</th>
+                                <th align="right" style="padding:10px 8px; border-bottom:1px solid #e3e6ec; color:#6b7280; font-weight:normal;">Amount</th>
+                            </tr>
+
+                            <tr th:each="item : ${items}">
+                                <td style="padding:12px 8px; border-bottom:1px solid #eef0f4;">
+                                    <span th:text="${item.name}">Wireless Headphones</span>
+                                    <div th:if="${item.hasPoints}"
+                                         style="font-size:11px; color:#8a6d0b; padding-top:3px;">
+                                        <span th:text="${item.points}">60</span> e-Points redeemed
+                                        (<span th:text="${item.priceOption}">HYBRID</span>)
+                                    </div>
+                                </td>
+                                <td align="center" style="padding:12px 8px; border-bottom:1px solid #eef0f4;"
+                                    th:text="${item.quantity}">2</td>
+                                <td align="right" style="padding:12px 8px; border-bottom:1px solid #eef0f4;">
+                                    <span th:if="${item.discounted}"
+                                          style="color:#9aa1ad; text-decoration:line-through; padding-right:6px;"
+                                          th:text="${item.mrp}">₹2,499.00</span>
+                                    <span th:text="${item.unitPrice}">₹1,999.00</span>
+                                </td>
+                                <td align="right" style="padding:12px 8px; border-bottom:1px solid #eef0f4;"
+                                    th:text="${item.lineTotal}">₹3,998.00</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Totals -->
+                <tr>
+                    <td style="padding:18px 28px 0 28px;">
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+                               style="font-size:13px;">
+                            <tr>
+                                <td style="padding:6px 8px; color:#6b7280;">Subtotal</td>
+                                <td align="right" style="padding:6px 8px;"
+                                    th:text="${subtotalAmount}">₹3,998.00</td>
+                            </tr>
+                            <tr th:if="${hasSavings}">
+                                <td style="padding:6px 8px; color:#1a7f4b;">You saved</td>
+                                <td align="right" style="padding:6px 8px; color:#1a7f4b;"
+                                    th:text="'- ' + ${totalSavings}">- ₹1,000.00</td>
+                            </tr>
+                            <tr th:if="${hasPointsRedeemed}">
+                                <td style="padding:6px 8px; color:#6b7280;">e-Points redeemed</td>
+                                <td align="right" style="padding:6px 8px;"
+                                    th:text="${pointsRedeemed}">60</td>
+                            </tr>
+                            <!--/* No tax row: this project charges the price shown on the
+                                   product card, so the total IS the subtotal. */-->
+                            <tr>
+                                <td style="padding:12px 8px; border-top:2px solid #1f2430;
+                                           font-size:15px; font-weight:bold;">Total paid</td>
+                                <td align="right" style="padding:12px 8px; border-top:2px solid #1f2430;
+                                           font-size:15px; font-weight:bold;"
+                                    th:text="${totalAmount}">₹3,998.00</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- e-Points earned -->
+                <tr th:if="${hasPointsEarned}">
+                    <td style="padding:16px 28px 0 28px;">
+                        <div style="background-color:#fff8e6; border:1px solid #f1dfae;
+                                    border-radius:6px; padding:14px 16px; font-size:13px; color:#6b5518;">
+                            You earned <strong th:text="${pointsEarned}">119</strong> e-Points on this order.
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Addresses -->
+                <tr>
+                    <td style="padding:22px 28px 0 28px;">
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+                               style="font-size:13px;">
+                            <tr>
+                                <td width="50%" valign="top" style="padding:0 10px 0 0;"
+                                    th:if="${shippingAddress != null}">
+                                    <div style="font-weight:bold; padding-bottom:6px;">Delivering to</div>
+                                    <div style="color:#4a5160; line-height:19px;"
+                                         th:text="${shippingAddress}">12 MG Road, Indore</div>
+                                </td>
+                                <td width="50%" valign="top" style="padding:0 0 0 10px;"
+                                    th:if="${billingAddress != null}">
+                                    <div style="font-weight:bold; padding-bottom:6px;">Billing address</div>
+                                    <div style="color:#4a5160; line-height:19px;"
+                                         th:text="${billingAddress}">12 MG Road, Indore</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td style="padding:26px 28px 28px 28px;">
+                        <div style="border-top:1px solid #e3e6ec; padding-top:16px;
+                                    font-size:12px; color:#8a919e; line-height:18px;">
+                            Questions about this order? Reply to
+                            <a th:href="'mailto:' + ${supportEmail}" th:text="${supportEmail}"
+                               style="color:#2b5fd9; text-decoration:none;">support@emart.local</a>.
+                            <br/>
+                            This is an automated message from
+                            <span th:text="${storeName}">e-MART</span>. Please do not share it.
+                        </div>
+                    </td>
+                </tr>
+
+            </table>
+
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

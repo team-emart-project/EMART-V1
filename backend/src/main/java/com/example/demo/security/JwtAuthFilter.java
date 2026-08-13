@@ -1,66 +1,87 @@
 package com.example.demo.security;
 
-import com.example.demo.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collections;
 
+/**
+ * Reads "Authorization: Bearer <token>" on every request and, if the token is
+ * valid, puts the user into the SecurityContext for the rest of that request.
+ *
+ * Extends OncePerRequestFilter so it cannot run twice on a forward/include.
+ *
+ * It never rejects anything itself — an absent or bad token simply leaves the
+ * request unauthenticated, and the authorization rules in SecurityConfig decide
+ * whether that is a problem. That keeps public endpoints working.
+ */
 @Component
-@RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
+    private static final Logger log = LoggerFactory.getLogger(JwtAuthFilter.class);
 
-    private final JwtUtil jwtUtil;
-    private final UserRepository userRepository;
+    public JwtAuthFilter(JwtTokenProvider jwtTokenProvider, CustomUserDetailsService userDetailsService) {
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.userDetailsService = userDetailsService;
+    }
+
+
+    private static final String HEADER = "Authorization";
+    private static final String PREFIX = "Bearer ";
+
+    private final JwtTokenProvider jwtTokenProvider;
+    private final CustomUserDetailsService userDetailsService;
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request,
-                                     @NonNull HttpServletResponse response,
-                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
 
-        final String authHeader = request.getHeader("Authorization");
-        String email = null;
-        String token = null;
+        String token = resolveToken(request);
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            token = authHeader.substring(7);
+        if (token != null
+                && jwtTokenProvider.isTokenValid(token)
+                && SecurityContextHolder.getContext().getAuthentication() == null) {
             try {
-                email = jwtUtil.extractEmail(token);
-            } catch (Exception e) {
-                // invalid/expired token -> leave email null, request stays unauthenticated
-            }
-        }
+                Integer userId = jwtTokenProvider.getUserIdFromToken(token);
+                UserDetails userDetails = userDetailsService.loadUserById(userId);
 
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            var userOpt = userRepository.findByEmail(email);
+                if (userDetails.isEnabled()) {
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request));
 
-            if (userOpt.isPresent() && jwtUtil.validateToken(token, email)) {
-                UserDetails userDetails = org.springframework.security.core.userdetails.User
-                        .withUsername(email)
-                        .password("")
-                        .authorities(Collections.emptyList())
-                        .build();
-
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-                request.setAttribute("userId", userOpt.get().getUserId());
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                } else {
+                    log.debug("Token belongs to a deactivated user: {}", userId);
+                }
+            } catch (Exception ex) {
+                // Never let an auth problem produce a 500; leave it unauthenticated.
+                log.debug("Could not authenticate token: {}", ex.getMessage());
+                SecurityContextHolder.clearContext();
             }
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private String resolveToken(HttpServletRequest request) {
+        String header = request.getHeader(HEADER);
+        if (header != null && header.startsWith(PREFIX)) {
+            return header.substring(PREFIX.length()).trim();
+        }
+        return null;
     }
 }

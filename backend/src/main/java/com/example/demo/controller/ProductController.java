@@ -1,62 +1,61 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.response.ApiResponse;
-import com.example.demo.dto.response.PageResponse;
 import com.example.demo.dto.response.ProductResponse;
-import com.example.demo.exception.BadRequestException;
-import com.example.demo.service.ProductService;
-import lombok.RequiredArgsConstructor;
+import com.example.demo.dto.response.ProductVariantResponse;
+import com.example.demo.response.ApiResponse;
+import com.example.demo.response.PageResponse;
+import com.example.demo.service.interfaces.ProductService;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
+/**
+ * Module 5 — product browsing. Public, read-only.
+ *
+ * There is deliberately no brand filter: product_master has no brand column,
+ * so it cannot be supported without a schema change.
+ */
 @RestController
 @RequestMapping("/api/products")
-@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
 
-    // GET /api/products
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+
+    /** GET /api/products?search=canon&minPrice=1000&maxPrice=50000&page=0&size=12 */
     @GetMapping
-    public ResponseEntity<ApiResponse<PageResponse<ProductResponse>>> getAllProducts(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
-        PageResponse<ProductResponse> products = productService.getAllProducts(page, size);
-        return ResponseEntity.ok(ApiResponse.success("Products fetched successfully", products));
-    }
-
-    // GET /api/products/filter?brand=&price=&catmasterId=
-    @GetMapping("/filter")
-    public ResponseEntity<ApiResponse<PageResponse<ProductResponse>>> filterProducts(
-            @RequestParam(required = false) String brand,
-            @RequestParam(required = false) BigDecimal price,
-            @RequestParam(required = false) Integer catmasterId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
-        PageResponse<ProductResponse> products =
-                productService.filterProducts(brand, price, catmasterId, page, size);
-        return ResponseEntity.ok(ApiResponse.success("Filtered products fetched successfully", products));
-    }
-
-    // GET /api/products/search?q=
-    @GetMapping("/search")
     public ResponseEntity<ApiResponse<PageResponse<ProductResponse>>> searchProducts(
-            @RequestParam(name = "q") String query,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
-        if (query == null || query.isBlank()) {
-            throw new BadRequestException("Search query 'q' must not be empty");
-        }
-        PageResponse<ProductResponse> products = productService.searchProducts(query, page, size);
-        return ResponseEntity.ok(ApiResponse.success("Search results fetched successfully", products));
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
+            @PageableDefault(size = 12, sort = "prodName", direction = Sort.Direction.ASC) Pageable pageable) {
+
+        PageResponse<ProductResponse> products =
+                productService.searchProducts(search, minPrice, maxPrice, pageable);
+
+        return ResponseEntity.ok(ApiResponse.success("Products retrieved successfully", products));
     }
 
-    // GET /api/products/{id}
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<ProductResponse>> getProductById(@PathVariable Long id) {
-        ProductResponse product = productService.getProductById(id);
-        return ResponseEntity.ok(ApiResponse.success("Product fetched successfully", product));
+    /** GET /api/products/{prodId} — detail, variants included. */
+    @GetMapping("/{prodId}")
+    public ResponseEntity<ApiResponse<ProductResponse>> getProduct(@PathVariable Integer prodId) {
+        return ResponseEntity.ok(ApiResponse.success(
+                "Product retrieved successfully", productService.getProduct(prodId)));
+    }
+
+    /** GET /api/products/{prodId}/variants — variants alone, grouped by attribute. */
+    @GetMapping("/{prodId}/variants")
+    public ResponseEntity<ApiResponse<List<ProductVariantResponse>>> getProductVariants(
+            @PathVariable Integer prodId) {
+        return ResponseEntity.ok(ApiResponse.success(
+                "Product variants retrieved successfully", productService.getProductVariants(prodId)));
     }
 }

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="600" height="450" role="img" aria-label="Feature Phones">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0%" stop-color="#eef2ff"/><stop offset="100%" stop-color="#c7d2fe"/></linearGradient></defs>
+<rect width="600" height="450" fill="url(#g)"/>
+<g transform="translate(300,190) scale(7) translate(-12,-12)">
+<path d="M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm3 17h4" fill="none" stroke="#4f46e5" stroke-width="1.5"
+      stroke-linecap="round" stroke-linejoin="round"/></g>
+<text x="300" y="360" font-family="Inter,Segoe UI,sans-serif" font-size="34" font-weight="700"
+      fill="#0f172a" text-anchor="middle">Feature Phones</text></svg>
