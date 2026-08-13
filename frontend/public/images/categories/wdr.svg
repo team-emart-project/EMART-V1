@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="600" height="450" role="img" aria-label="Dresses &amp; Tops">
-<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-<stop offset="0%" stop-color="#fdf2f8"/><stop offset="100%" stop-color="#fbcfe8"/></linearGradient></defs>
-<rect width="600" height="450" fill="url(#g)"/>
-<g transform="translate(300,190) scale(7) translate(-12,-12)">
-<path d="M9 3h6l-1 4 3 14H7l3-14z" fill="none" stroke="#db2777" stroke-width="1.5"
-      stroke-linecap="round" stroke-linejoin="round"/></g>
-<text x="300" y="360" font-family="Inter,Segoe UI,sans-serif" font-size="34" font-weight="700"
-      fill="#0f172a" text-anchor="middle">Dresses &amp; Tops</text></svg>

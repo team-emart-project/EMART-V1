@@ -1,4 +1,0 @@
-<Solution>
-  <Project Path="Emart.Api/Emart.Api.csproj" />
-  <Project Path="Emart.Tests/Emart.Tests.csproj" />
-</Solution>

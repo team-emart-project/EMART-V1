@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="600" height="450" role="img" aria-label="Thin &amp; Light">
-<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-<stop offset="0%" stop-color="#ecfeff"/><stop offset="100%" stop-color="#a5f3fc"/></linearGradient></defs>
-<rect width="600" height="450" fill="url(#g)"/>
-<g transform="translate(300,190) scale(7) translate(-12,-12)">
-<path d="M4 5h16v10H4zM2 18h20l-2-2H4z" fill="none" stroke="#0891b2" stroke-width="1.5"
-      stroke-linecap="round" stroke-linejoin="round"/></g>
-<text x="300" y="360" font-family="Inter,Segoe UI,sans-serif" font-size="34" font-weight="700"
-      fill="#0f172a" text-anchor="middle">Thin &amp; Light</text></svg>
