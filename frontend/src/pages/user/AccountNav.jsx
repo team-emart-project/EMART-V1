@@ -17,7 +17,7 @@ export default function AccountNav() {
         <NavLink key={l.to} to={l.to}
           className={({ isActive }) => cn(
             'flex shrink-0 items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors',
-            isActive ? 'bg-brand-600 text-white' : 'text-slate-600 hover:bg-slate-50'
+            isActive ? 'bg-brand-gradient text-white shadow-sm shadow-brand-600/25' : 'text-slate-600 hover:bg-slate-50'
           )}>
           <l.icon className="h-4 w-4" />{l.label}
         </NavLink>

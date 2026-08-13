@@ -1,57 +1,80 @@
-import { Suspense, lazy } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import MainLayout from '@/components/layout/MainLayout';
 import ProtectedRoute from './ProtectedRoute';
-import AdminRoute from './AdminRoute';
-import Loader from '../components/Loader/Loader';
+import PublicOnlyRoute from './PublicOnlyRoute';
+import PageLoader from '@/components/common/PageLoader';
 
-// --- Customer pages (code-split: each route ships its own chunk) ---
-const Home = lazy(() => import('../pages/Home/Home'));
+/**
+ * REQUIREMENT 2 — Lazy loading.
+ *
+ * Every page is loaded with React.lazy(), so Vite emits a separate JS chunk per
+ * route and the browser only downloads the code for the page being visited.
+ * The initial bundle stays small: someone landing on the home page never
+ * downloads the checkout or payment code.
+ *
+ * <Suspense> supplies the fallback shown while a chunk is in flight.
+ */
 
-// --- Stubs for pages not yet built. Replace each with the real
-//     `lazy(() => import('../pages/X/X'))` as we build that page. ---
-const ComingSoon = ({ label }) => (
-  <div style={{ padding: '4rem', textAlign: 'center' }}>{label} — coming next</div>
-);
+// Public
+const HomePage           = lazy(() => import('@/pages/home/HomePage'));
+const ProductListPage    = lazy(() => import('@/pages/catalog/ProductListPage'));
+const ProductDetailPage  = lazy(() => import('@/pages/catalog/ProductDetailPage'));
+const CategoryPage       = lazy(() => import('@/pages/catalog/CategoryPage'));
+const NotFoundPage       = lazy(() => import('@/pages/NotFoundPage'));
+
+// Auth (only for logged-OUT users)
+const LoginPage          = lazy(() => import('@/pages/auth/LoginPage'));
+const RegisterPage       = lazy(() => import('@/pages/auth/RegisterPage'));
+const ForgotPasswordPage = lazy(() => import('@/pages/auth/ForgotPasswordPage'));
+const ResetPasswordPage  = lazy(() => import('@/pages/auth/ResetPasswordPage'));
+
+// Protected
+const CartPage           = lazy(() => import('@/pages/cart/CartPage'));
+const CheckoutPage       = lazy(() => import('@/pages/cart/CheckoutPage'));
+const PaymentPage        = lazy(() => import('@/pages/cart/PaymentPage'));
+const WishlistPage       = lazy(() => import('@/pages/wishlist/WishlistPage'));
+const ProfilePage        = lazy(() => import('@/pages/user/ProfilePage'));
+const AddressesPage      = lazy(() => import('@/pages/user/AddressesPage'));
+const EmartCardPage      = lazy(() => import('@/pages/user/EmartCardPage'));
+const OrdersPage         = lazy(() => import('@/pages/user/OrdersPage'));
+const OrderDetailPage    = lazy(() => import('@/pages/user/OrderDetailPage'));
 
 export default function AppRoutes() {
   return (
-    <Suspense fallback={<Loader label="Loading page…" />}>
+    <Suspense fallback={<PageLoader />}>
       <Routes>
-        {/* Public customer routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<ComingSoon label="Login" />} />
-        <Route path="/register" element={<ComingSoon label="Register" />} />
-        <Route path="/forgot-password" element={<ComingSoon label="Forgot Password" />} />
-        <Route path="/categories/:id" element={<ComingSoon label="Category listing" />} />
-        <Route path="/products" element={<ComingSoon label="Products" />} />
-        <Route path="/products/:id" element={<ComingSoon label="Product Details" />} />
-        <Route path="/search" element={<ComingSoon label="Search results" />} />
-        <Route path="/cart" element={<ComingSoon label="Cart" />} />
-        <Route path="/wishlist" element={<ComingSoon label="Wishlist" />} />
+        <Route element={<MainLayout />}>
 
-        {/* Protected customer routes — require login */}
-        <Route element={<ProtectedRoute />}>
-          <Route path="/checkout" element={<ComingSoon label="Checkout" />} />
-          <Route path="/orders" element={<ComingSoon label="Orders" />} />
-          <Route path="/orders/:id" element={<ComingSoon label="Order Details" />} />
-          <Route path="/profile" element={<ComingSoon label="Profile" />} />
-          <Route path="/loyalty-points" element={<ComingSoon label="Loyalty Points" />} />
-          <Route path="/coupons" element={<ComingSoon label="Coupons" />} />
+          {/* ---- public ---- */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/products" element={<ProductListPage />} />
+          <Route path="/products/:prodId" element={<ProductDetailPage />} />
+          <Route path="/categories/:catmasterId" element={<CategoryPage />} />
+
+          {/* ---- logged-out only ---- */}
+          <Route element={<PublicOnlyRoute />}>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+          </Route>
+
+          {/* ---- requires login: ONE guard for the whole group ---- */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/payment/:orderId" element={<PaymentPage />} />
+            <Route path="/wishlist" element={<WishlistPage />} />
+            <Route path="/account/profile" element={<ProfilePage />} />
+            <Route path="/account/addresses" element={<AddressesPage />} />
+            <Route path="/account/card" element={<EmartCardPage />} />
+            <Route path="/account/orders" element={<OrdersPage />} />
+            <Route path="/account/orders/:orderId" element={<OrderDetailPage />} />
+          </Route>
+
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
-
-        {/* Admin routes — require login + ADMIN role */}
-        <Route path="/admin" element={<AdminRoute />}>
-          <Route path="dashboard" element={<ComingSoon label="Admin Dashboard" />} />
-          <Route path="categories" element={<ComingSoon label="Category Management" />} />
-          <Route path="products" element={<ComingSoon label="Product Management" />} />
-          <Route path="banners" element={<ComingSoon label="Banner Management" />} />
-          <Route path="users" element={<ComingSoon label="User Management" />} />
-          <Route path="orders" element={<ComingSoon label="Order Management" />} />
-          <Route path="discounts" element={<ComingSoon label="Discount Management" />} />
-          <Route path="reports" element={<ComingSoon label="Reports" />} />
-        </Route>
-
-        <Route path="*" element={<ComingSoon label="404 — Page not found" />} />
       </Routes>
     </Suspense>
   );
