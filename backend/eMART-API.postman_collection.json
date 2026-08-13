@@ -1,0 +1,1608 @@
+{
+  "info": {
+    "_postman_id": "bc038b20-1f7f-4f4b-8350-a0caef008703",
+    "name": "e-MART API (Modules 1-9)",
+    "description": "e-MART backend - all 9 modules.\n\n## Quick start\n1. Run `emart_schema.sql` then `emart_seed_data.sql`.\n2. Start the app: `mvnw.cmd clean spring-boot:run`\n3. Run **02 Auth > Login (cardholder)** first - it saves the JWT into the\n   `accessToken` collection variable automatically. Every other request\n   inherits it via Bearer auth.\n\n## Seed logins (password is `Password@123` for all)\n| Email | Notes |\n|---|---|\n| rishi.chhalotre@example.com | approved cardholder, 350 pts -> cardholder pricing |\n| ananya.sharma@example.com | normal member -> MRP pricing |\n| priya.nair@example.com | inactive -> login refused |\n\n## Mock payment gateway\nA card number ending in **0** is DECLINED. Anything else is approved.\nUse `4242424242424242` to succeed, `4242424242424240` to test failure.\n\n## Suggested end-to-end run\nLogin -> Add to cart -> Checkout preview -> Place order -> Verify payment\n-> Download invoice PDF.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "orderId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "cartItemId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "addressId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "wishlistId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "prodId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "catmasterId",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 Module 1 - Home Page (public)",
+      "item": [
+        {
+          "name": "Featured categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/home/featured-categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "home",
+                "featured-categories"
+              ]
+            },
+            "description": "Categories where category_master.flag = 1. No login required.",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "New arrivals",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/home/new-arrivals?limit=8",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "home",
+                "new-arrivals"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "8"
+                }
+              ]
+            },
+            "description": "Newest products by created_at. limit is clamped to 1..50.",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 Module 2 - Auth (public)",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Creates an account. Membership number is printed to the SERVER CONSOLE (email is logged, not sent).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\",\n  \"email\": \"test.user@example.com\",\n  \"password\": \"Password@123\",\n  \"phone\": \"9876500000\",\n  \"dob\": \"1998-05-20\",\n  \"gender\": \"Male\",\n  \"education\": \"B.Tech\",\n  \"occupation\": \"Developer\",\n  \"annualIncome\": 800000,\n  \"marketingConsent\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Login (cardholder)  <- RUN THIS FIRST",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Saves the JWT into {{accessToken}} automatically. This user IS a cardholder, so cart/orders use cardholder_price.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"rishi.chhalotre@example.com\",\n  \"password\": \"Password@123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('login succeeded', () => pm.response.to.have.status(200));",
+                  "if (res.data && res.data.accessToken) {",
+                  "    pm.collectionVariables.set('accessToken', res.data.accessToken);",
+                  "    pm.collectionVariables.set('userId', res.data.user.userId);",
+                  "    console.log('Token saved.');",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login (normal member)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Non-cardholder - pricing falls back to mrp_price.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ananya.sharma@example.com\",\n  \"password\": \"Password@123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const res = pm.response.json();",
+                  "pm.test('login succeeded', () => pm.response.to.have.status(200));",
+                  "if (res.data && res.data.accessToken) {",
+                  "    pm.collectionVariables.set('accessToken', res.data.accessToken);",
+                  "    pm.collectionVariables.set('userId', res.data.user.userId);",
+                  "    console.log('Token saved.');",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login - wrong password (expect 401)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Returns the SAME message as an unknown email, to prevent user enumeration.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"rishi.chhalotre@example.com\",\n  \"password\": \"WrongPass@1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Login - inactive account (expect 401)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"priya.nair@example.com\",\n  \"password\": \"Password@123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Forgot password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/forgot-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "forgot-password"
+              ]
+            },
+            "description": "Always returns 200 even for an unknown email. The reset TOKEN is printed to the server console - copy it into the next request.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"rishi.chhalotre@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Reset password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/reset-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "reset-password"
+              ]
+            },
+            "description": "Token is valid for 30 minutes and is cleared after use, so the link cannot be replayed.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"PASTE-TOKEN-FROM-SERVER-CONSOLE\",\n  \"newPassword\": \"NewPass@123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "logout"
+              ]
+            },
+            "description": "Stateless JWT: nothing is revoked server-side. The client must discard the token."
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 Module 3 - Profile & Addresses",
+      "item": [
+        {
+          "name": "Get my profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "me"
+              ]
+            },
+            "description": "Never returns passwordHash or resetPasswordToken."
+          }
+        },
+        {
+          "name": "Update my profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "me"
+              ]
+            },
+            "description": "email / password / role are NOT in the DTO, so they cannot be mass-assigned.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Rishiraj\",\n  \"lastName\": \"Chhalotre\",\n  \"phone\": \"9876543210\",\n  \"dob\": \"1996-04-12\",\n  \"gender\": \"Male\",\n  \"education\": \"B.Tech\",\n  \"occupation\": \"Senior Engineer\",\n  \"annualIncome\": 1500000,\n  \"marketingConsent\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "List my addresses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me/addresses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "me",
+                "addresses"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Add address",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me/addresses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "me",
+                "addresses"
+              ]
+            },
+            "description": "The FIRST address a user saves automatically becomes their default.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"addressLine1\": \"12 New Street\",\n  \"addressLine2\": \"Near Park\",\n  \"city\": \"Pune\",\n  \"state\": \"Maharashtra\",\n  \"zipCode\": \"411004\",\n  \"country\": \"India\",\n  \"addressType\": \"BOTH\",\n  \"isDefault\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (r.data && r.data.addressId) pm.collectionVariables.set('addressId', r.data.addressId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update address",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me/addresses/{{addressId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "me",
+                "addresses",
+                "{{addressId}}"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"addressLine1\": \"12 New Street (updated)\",\n  \"city\": \"Pune\",\n  \"state\": \"Maharashtra\",\n  \"zipCode\": \"411004\",\n  \"country\": \"India\",\n  \"addressType\": \"SHIPPING\",\n  \"isDefault\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Set default address",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me/addresses/{{addressId}}/default",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "me",
+                "addresses",
+                "{{addressId}}",
+                "default"
+              ]
+            },
+            "description": "Demotes whichever address was default before, in the same transaction."
+          }
+        },
+        {
+          "name": "Delete address",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me/addresses/{{addressId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "me",
+                "addresses",
+                "{{addressId}}"
+              ]
+            },
+            "description": "If the deleted one was the default, the next address is promoted."
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 Module 4 - e-MART Card",
+      "item": [
+        {
+          "name": "Apply for card",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/emart-card/apply",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "emart-card",
+                "apply"
+              ]
+            },
+            "description": "Creates a PENDING card. NOTE: applying does NOT set users.is_cardholder - approval would, and approval is an admin action which is out of scope. Seed user 1 already has an APPROVED card, so this returns 409 for them.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employmentDetails\": \"Software Engineer, Infosys Ltd.\",\n  \"bankAccountNo\": \"123456789012\",\n  \"panNumber\": \"ABCDE1234F\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get my card",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/emart-card/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "emart-card",
+                "me"
+              ]
+            },
+            "description": "Bank account is masked and the PAN is never returned."
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 Module 5 - Catalog (public)",
+      "item": [
+        {
+          "name": "Category tree",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories"
+              ]
+            },
+            "description": "Full nested tree built from the flat cat_id / subcat_id codes.",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Root categories only",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories?flat=true",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories"
+              ],
+              "query": [
+                {
+                  "key": "flat",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Cheaper call for a nav bar.",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Get one category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/{{catmasterId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories",
+                "{{catmasterId}}"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Sub-categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/{{catmasterId}}/subcategories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories",
+                "{{catmasterId}}",
+                "subcategories"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Products in category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/{{catmasterId}}/products?includeSubCategories=true&page=0&size=12",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories",
+                "{{catmasterId}}",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "includeSubCategories",
+                  "value": "true"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "12"
+                }
+              ]
+            },
+            "description": "includeSubCategories defaults to TRUE because products are filed against LEAF categories - without it, 'Electronics' returns nothing.",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Search products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products?search=canon&minPrice=1000&maxPrice=100000&page=0&size=12",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "canon"
+                },
+                {
+                  "key": "minPrice",
+                  "value": "1000"
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "100000"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "12"
+                }
+              ]
+            },
+            "description": "All filters optional. No brand filter: product_master has no brand column.",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Product detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{prodId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{prodId}}"
+              ]
+            },
+            "description": "Includes long description and grouped variants.",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        },
+        {
+          "name": "Product variants",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{prodId}}/variants",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{prodId}}",
+                "variants"
+              ]
+            },
+            "description": "Grouped by attribute, e.g. Color: [Black, Silver].",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 Module 6 - Cart",
+      "item": [
+        {
+          "name": "Get my cart",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cart",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cart"
+              ]
+            },
+            "description": "Totals are calculated on read. Cardholders see cardholder_price."
+          }
+        },
+        {
+          "name": "Add item to cart",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cart/items",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cart",
+                "items"
+              ]
+            },
+            "description": "Adding a product already in the cart INCREMENTS quantity instead of creating a second row.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prodId\": 1,\n  \"quantity\": 2,\n  \"priceOption\": \"REGULAR\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (r.data && r.data.items && r.data.items.length) pm.collectionVariables.set('cartItemId', r.data.items[0].cartItemId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Add item WITH e-Points",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cart/items",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cart",
+                "items"
+              ]
+            },
+            "description": "Buy with e-Points only. Cardholders only, and only on a product whose points_price is set - try prodId 14. Cash charged is 0; the points come out of the balance at payment.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prodId\": 14,\n  \"quantity\": 1,\n  \"priceOption\": \"POINTS\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Update cart item",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cart/items/{{cartItemId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cart",
+                "items",
+                "{{cartItemId}}"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Remove cart item",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cart/items/{{cartItemId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cart",
+                "items",
+                "{{cartItemId}}"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Clear cart",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cart",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cart"
+              ]
+            },
+            "description": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 Module 7 - Wishlist",
+      "item": [
+        {
+          "name": "Get my wishlist",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/wishlist",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "wishlist"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Add to wishlist",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/wishlist",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "wishlist"
+              ]
+            },
+            "description": "(user_id, prod_id) is UNIQUE - adding the same product twice returns 409.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prodId\": 4\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (r.data && r.data.wishlistId) pm.collectionVariables.set('wishlistId', r.data.wishlistId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Add duplicate (expect 409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/wishlist",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "wishlist"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prodId\": 4\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Remove from wishlist",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/wishlist/{{wishlistId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "wishlist",
+                "{{wishlistId}}"
+              ]
+            },
+            "description": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 Module 8 - Checkout & Orders",
+      "item": [
+        {
+          "name": "Checkout preview",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/checkout-preview",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "orders",
+                "checkout-preview"
+              ]
+            },
+            "description": "Calculates subtotal, savings, 5% tax, points impact and total WITHOUT saving anything. billingAddressId is optional and defaults to the shipping address.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shippingAddressId\": 1,\n  \"billingAddressId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Place order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/orders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "orders"
+              ]
+            },
+            "description": "Converts the cart into an order, snapshots product names, then EMPTIES the cart (the cart row is reused because cart.user_id is UNIQUE).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shippingAddressId\": 1,\n  \"billingAddressId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "if (r.data && r.data.orderId) pm.collectionVariables.set('orderId', r.data.orderId);",
+                  "pm.test('order is PLACED + PENDING', () => {",
+                  "    pm.expect(r.data.orderStatus).to.eql('PLACED');",
+                  "    pm.expect(r.data.paymentStatus).to.eql('PENDING');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "My order history",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/orders?page=0&size=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "orders"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Order detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/{{orderId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "orders",
+                "{{orderId}}"
+              ]
+            },
+            "description": ""
+          }
+        },
+        {
+          "name": "Cancel order",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/{{orderId}}/cancel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "orders",
+                "{{orderId}}",
+                "cancel"
+              ]
+            },
+            "description": "Only allowed while the order is PLACED and payment is PENDING. A PAID order is refused."
+          }
+        },
+        {
+          "name": "Download invoice PDF",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/{{orderId}}/invoice-pdf",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "orders",
+                "{{orderId}}",
+                "invoice-pdf"
+              ]
+            },
+            "description": "Returns raw PDF bytes (not the JSON envelope). Refused with 400 until the order is PAID - run the payment request first. In Postman use Send and Download to save the file."
+          }
+        }
+      ]
+    },
+    {
+      "name": "09 Module 9 - Payment",
+      "item": [
+        {
+          "name": "Verify payment - SUCCESS",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/payments/{{orderId}}/verify",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "{{orderId}}",
+                "verify"
+              ]
+            },
+            "description": "IMPORTANT: amount must EXACTLY equal the order total from 'Place order', otherwise it is rejected as tampering. Copy totalAmount from that response. On success the order becomes PAID and e-Points are settled.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cardNumber\": \"4242424242424242\",\n  \"cardHolderName\": \"RISHI CHHALOTRE\",\n  \"expiry\": \"12/29\",\n  \"cvv\": \"123\",\n  \"amount\": 62997.9\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const r = pm.response.json();",
+                  "pm.test('payment succeeded', () => pm.expect(r.data.status).to.eql('SUCCESS'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Verify payment - DECLINED",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/payments/{{orderId}}/verify",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "{{orderId}}",
+                "verify"
+              ]
+            },
+            "description": "Mock rule: a card ending in 0 is declined. The order stays PENDING so it can be retried.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cardNumber\": \"4242424242424240\",\n  \"cardHolderName\": \"RISHI CHHALOTRE\",\n  \"expiry\": \"12/29\",\n  \"cvv\": \"123\",\n  \"amount\": 62997.9\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Verify payment - wrong amount (expect 400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/payments/{{orderId}}/verify",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "{{orderId}}",
+                "verify"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cardNumber\": \"4242424242424242\",\n  \"cardHolderName\": \"RISHI CHHALOTRE\",\n  \"expiry\": \"12/29\",\n  \"cvv\": \"123\",\n  \"amount\": 1.0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Payment history for order",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/payments/{{orderId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "{{orderId}}"
+              ]
+            },
+            "description": "Every attempt, newest first. Failed attempts are kept for audit."
+          }
+        }
+      ]
+    },
+    {
+      "name": "10 Security checks",
+      "item": [
+        {
+          "name": "Protected endpoint with NO token (expect 401)",
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "noauth"
+            },
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cart",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cart"
+              ]
+            },
+            "description": "Returns clean JSON 401, not Spring's HTML error page."
+          }
+        },
+        {
+          "name": "Protected endpoint with a BAD token (expect 401)",
+          "request": {
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "not.a.real.token",
+                  "type": "string"
+                }
+              ]
+            },
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cart",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cart"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Someone else's order (expect 403)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "orders",
+                "1"
+              ]
+            },
+            "description": "Order 1 belongs to seed user 1. Log in as ananya.sharma@example.com first, then run this - ownership is enforced server-side."
+          }
+        },
+        {
+          "name": "Health check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "health"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
