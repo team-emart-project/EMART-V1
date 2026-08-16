@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -vE \"^\\\\s*\\(\\\\*|/\\\\*|//\\)\")",
+      "Bash(grep -v \"^$\")",
+      "Bash(dotnet build *)"
+    ]
+  }
+}
