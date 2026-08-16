@@ -45,7 +45,11 @@ export default function HomePage() {
       <PromoTiles />
 
       {/* 5 — new arrivals grid */}
+<<<<<<< HEAD
+      <section className="bg-slate-50 py-12">
+=======
       <section className="bg-brand-wash py-12">
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}

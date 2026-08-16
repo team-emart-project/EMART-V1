@@ -2,6 +2,30 @@
 
 /* ==================================================================
    DESIGN TOKENS  (Tailwind v4 keeps the theme in CSS, not a JS config)
+<<<<<<< HEAD
+   Stripe-inspired: one bold brand colour, neutral greys, and soft
+   gradient accents used only as accents - never as body text.
+   ================================================================== */
+@theme {
+  /* brand — indigo/violet, the single bold colour */
+  --color-brand-50:  #eef2ff;
+  --color-brand-100: #e0e7ff;
+  --color-brand-200: #c7d2fe;
+  --color-brand-300: #a5b4fc;
+  --color-brand-400: #818cf8;
+  --color-brand-500: #6366f1;
+  --color-brand-600: #4f46e5;
+  --color-brand-700: #4338ca;
+  --color-brand-800: #3730a3;
+  --color-brand-900: #312e81;
+
+  /* gradient accent stops */
+  --color-accent-400: #f472b6;
+  --color-accent-500: #ec4899;
+  --color-accent-600: #db2777;
+  --color-cyan-glow:  #22d3ee;
+
+=======
 
    PALETTE — one colour: #1A4247, a deep desaturated teal.
    ---------------------------------------------------------------
@@ -48,6 +72,7 @@
   --color-accent-700: #1A4247;
   --color-cyan-glow:  #5e8f95;
 
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
   --font-sans:    'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-display: 'Sora', 'Inter', ui-sans-serif, system-ui, sans-serif;
 
@@ -94,7 +119,11 @@
   }
 
   :focus-visible {
+<<<<<<< HEAD
+    outline: 2px solid var(--color-brand-500, #6366f1);
+=======
     outline: 2px solid var(--color-brand-600, #1A4247);
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
     outline-offset: 2px;
   }
 
@@ -105,6 +134,11 @@
 }
 
 @layer utilities {
+<<<<<<< HEAD
+  /* Stripe's signature: text filled with the brand gradient */
+  .text-gradient {
+    background-image: linear-gradient(to right, var(--color-brand-600, #4f46e5), var(--color-brand-500, #6366f1), var(--color-accent-500, #ec4899));
+=======
   /* Text filled with the brand ramp. Single hue, so it reads as a sheen
      across the letters rather than a rainbow. */
   .text-gradient {
@@ -112,11 +146,14 @@
       var(--color-brand-600, #1A4247),
       var(--color-brand-500, #316b72),
       var(--color-brand-700, #163a3e));
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
 
+<<<<<<< HEAD
+=======
   /* The house gradient. Every large coloured surface uses one of these three
      so the site reads as one palette instead of a dozen improvised pairs.
      All three stay inside #1A4247's own hue — the movement is depth, not
@@ -148,6 +185,7 @@
   .on-brand-muted  { color: rgba(255, 255, 255, 0.72); }
   .border-on-brand { border-color: rgba(255, 255, 255, 0.22); }
 
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
   .glass {
     background-color: rgba(255, 255, 255, 0.75);
     backdrop-filter: blur(24px);
@@ -165,18 +203,30 @@
   }
   .card-hover:hover {
     transform: translateY(-0.375rem);
+<<<<<<< HEAD
+    box-shadow: 0 25px 50px -12px rgba(79, 70, 229, 0.1);
+=======
     box-shadow: 0 25px 50px -12px rgba(26, 66, 71, 0.22);
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
   }
 
   /* hides the scrollbar on the product carousels without losing scrolling */
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
 
+<<<<<<< HEAD
+  /* faint grid, like Stripe's section backdrops */
+  .grid-bg {
+    background-image:
+      linear-gradient(to right,  rgba(99,102,241,0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(99,102,241,0.06) 1px, transparent 1px);
+=======
   /* faint grid section backdrop */
   .grid-bg {
     background-image:
       linear-gradient(to right,  rgba(26,66,71,0.07) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(26,66,71,0.07) 1px, transparent 1px);
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
     background-size: 56px 56px;
   }
 
@@ -190,7 +240,11 @@
     position: absolute; inset: 0;
     border-radius: inherit;
     padding: 1px;
+<<<<<<< HEAD
+    background: linear-gradient(135deg, var(--color-brand-400), var(--color-accent-400));
+=======
     background: linear-gradient(135deg, var(--color-brand-500), var(--color-teal-mid), var(--color-accent-500));
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
             mask-composite: exclude;

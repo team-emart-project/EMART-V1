@@ -1,8 +1,14 @@
 {
   "version": 2,
+<<<<<<< HEAD
+  "dgSpecHash": "1e4D/vmJk0g=",
+  "success": true,
+  "projectFilePath": "D:\\EMART-V1\\dotnet-backend\\Emart.Api\\Emart.Api.csproj",
+=======
   "dgSpecHash": "LU1hZkQf7Lw=",
   "success": true,
   "projectFilePath": "E:\\Emart-VFinal\\dotnet-backend\\Emart.Api\\Emart.Api.csproj",
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
   "expectedPackageFiles": [
     "C:\\Users\\rishi\\.nuget\\packages\\bcrypt.net-next\\4.2.0\\bcrypt.net-next.4.2.0.nupkg.sha512",
     "C:\\Users\\rishi\\.nuget\\packages\\bouncycastle.cryptography\\2.6.2\\bouncycastle.cryptography.2.6.2.nupkg.sha512",

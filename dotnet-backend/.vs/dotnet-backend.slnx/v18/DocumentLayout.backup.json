@@ -30,7 +30,12 @@
               "RelativeToolTip": "Emart.Tests\\Emart.Tests.csproj",
               "ViewState": "AgIAABwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+<<<<<<< HEAD
+              "WhenOpened": "2026-08-05T13:36:02.872Z",
+              "EditorCaption": ""
+=======
               "WhenOpened": "2026-08-05T13:36:02.872Z"
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
             },
             {
               "$type": "Document",

@@ -1,6 +1,19 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
+    "D:\\EMART-V1\\dotnet-backend\\Emart.Api\\Emart.Api.csproj": {}
+  },
+  "projects": {
+    "D:\\EMART-V1\\dotnet-backend\\Emart.Api\\Emart.Api.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\EMART-V1\\dotnet-backend\\Emart.Api\\Emart.Api.csproj",
+        "projectName": "Emart.Api",
+        "projectPath": "D:\\EMART-V1\\dotnet-backend\\Emart.Api\\Emart.Api.csproj",
+        "packagesPath": "C:\\Users\\rishi\\.nuget\\packages\\",
+        "outputPath": "D:\\EMART-V1\\dotnet-backend\\Emart.Api\\obj\\",
+=======
     "E:\\Emart-VFinal\\dotnet-backend\\Emart.Api\\Emart.Api.csproj": {}
   },
   "projects": {
@@ -12,6 +25,7 @@
         "projectPath": "E:\\Emart-VFinal\\dotnet-backend\\Emart.Api\\Emart.Api.csproj",
         "packagesPath": "C:\\Users\\rishi\\.nuget\\packages\\",
         "outputPath": "E:\\Emart-VFinal\\dotnet-backend\\Emart.Api\\obj\\",
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

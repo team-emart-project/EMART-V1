@@ -156,7 +156,11 @@ export default function PaymentPage() {
                 <Input label="Card number" name="cardNumber" required inputMode="numeric"
                   value={form.cardNumber} onChange={onChange} placeholder="4242 4242 4242 4242" />
                 <Input label="Name on card" name="cardHolderName" required
+<<<<<<< HEAD
+                  value={form.cardHolderName} onChange={onChange} placeholder="RISHI CHHALOTRE" />
+=======
                   value={form.cardHolderName} onChange={onChange} placeholder="" />
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
 
                 <div className="grid grid-cols-2 gap-4">
                   <Input label="Expiry" name="expiry" required placeholder="MM/YY"

@@ -30,6 +30,8 @@ namespace Emart.Api.Services
         private readonly IConfiguration _configuration;
         private readonly ILogger<OrderService> _logger;
 
+<<<<<<< HEAD
+=======
         /// <summary>
         /// The ONLY thing this class knows about email: an interface with one
         /// method. No SMTP, no templates, no invoice HTML — all of that lives in
@@ -38,12 +40,16 @@ namespace Emart.Api.Services
         /// </summary>
         private readonly IEmailServiceClient _emailServiceClient;
 
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
         public OrderService(EmartDbContext context,
                             ISecurityUtils securityUtils,
                             ICardholderService cardholderService,
                             IPricingService pricingService,
                             IConfiguration configuration,
+<<<<<<< HEAD
+=======
                             IEmailServiceClient emailServiceClient,
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
                             ILogger<OrderService> logger)
         {
             _context = context;
@@ -51,7 +57,10 @@ namespace Emart.Api.Services
             _cardholderService = cardholderService;
             _pricingService = pricingService;
             _configuration = configuration;
+<<<<<<< HEAD
+=======
             _emailServiceClient = emailServiceClient;
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
             _logger = logger;
         }
 
@@ -118,6 +127,9 @@ namespace Emart.Api.Services
             order.User = user;
             order.ShippingAddress = shipping;
             order.BillingAddress = billing;
+<<<<<<< HEAD
+            return OrderMapper.ToDto(order, null);
+=======
 
             var dto = OrderMapper.ToDto(order, null);
 
@@ -138,6 +150,7 @@ namespace Emart.Api.Services
                 OrderEmailPayload.From(dto, user.Email));
 
             return dto;
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
         }
 
         // ------------------------------------------------------------------

@@ -8,7 +8,10 @@ using Emart.Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+<<<<<<< HEAD
+=======
 using Microsoft.Extensions.Options;
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
@@ -102,6 +105,8 @@ builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IEmartCardService, EmartCardService>();
 
 // ---------------------------------------------------------------------------
+<<<<<<< HEAD
+=======
 // backend-email-microservice
 //
 // Order confirmation + invoice emails are NOT sent from this API. OrderService
@@ -129,6 +134,7 @@ builder.Services.AddHttpClient<IEmailServiceClient, EmailServiceClient>((provide
 });
 
 // ---------------------------------------------------------------------------
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
 // JWT
 //
 // Both the signing key here and the one AuthService signs with are read from

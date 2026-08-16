@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
+/**
+ * Myntra/Flipkart-style promotional banner slider.
+=======
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -8,11 +17,18 @@ import { productImage, placeholderImage, formatPrice } from '@/utils/formatters'
 
 /**
  * Promotional banner slider with REAL products on the slide.
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
  *
  *   - auto-advances every 5s
  *   - pauses on hover and while the tab is hidden (an unseen carousel
  *     burning CPU is pure waste)
  *   - swipe on touch, arrows on desktop, dots for position
+<<<<<<< HEAD
+ *
+ * Banners are local SVGs in public/images/banners, so there is no CMS to wire
+ * up and nothing to fetch. Add a slide by dropping a file in and adding a row
+ * to SLIDES.
+=======
  *   - each slide carries three promotional product cards pulled from the API
  *
  * WHY THE PRODUCTS ARE HERE
@@ -25,6 +41,7 @@ import { productImage, placeholderImage, formatPrice } from '@/utils/formatters'
  * The whole carousel makes ONE request (new-arrivals) and deals the results
  * out across the slides, biggest discount first — five separate per-slide
  * searches would be five round-trips for the same pixels.
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
  */
 const SLIDES = [
   { img: '/images/banners/mega-sale.svg',   to: '/products',                 alt: 'Mega savings days — up to 70% off' },
@@ -35,6 +52,8 @@ const SLIDES = [
 ];
 
 const INTERVAL = 5000;
+<<<<<<< HEAD
+=======
 const PER_SLIDE = 3;
 
 /** One promotional product card sitting on top of the banner artwork. */
@@ -77,6 +96,7 @@ function PromoProductCard({ product, delay = 0 }) {
     </motion.div>
   );
 }
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
 
 export default function BannerCarousel() {
   const [index, setIndex] = useState(0);
@@ -85,6 +105,8 @@ export default function BannerCarousel() {
   const navigate = useNavigate();
   const timer = useRef(null);
 
+<<<<<<< HEAD
+=======
   // One fetch feeds every slide.
   const { data: pool } = useFetch(endpoints.home.newArrivals(SLIDES.length * PER_SLIDE));
 
@@ -97,6 +119,7 @@ export default function BannerCarousel() {
     return SLIDES.map((_, i) => list.slice(i * PER_SLIDE, i * PER_SLIDE + PER_SLIDE));
   }, [pool]);
 
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
   const go = useCallback((next) => {
     setDir(next > index ? 1 : -1);
     setIndex((next + SLIDES.length) % SLIDES.length);
@@ -124,8 +147,11 @@ export default function BannerCarousel() {
     exit: (d) => ({ opacity: 0, x: d > 0 ? -60 : 60 }),
   };
 
+<<<<<<< HEAD
+=======
   const current = promoBySlide[index] || [];
 
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
   return (
     <section
       className="relative bg-slate-100"
@@ -157,6 +183,18 @@ export default function BannerCarousel() {
           />
         </AnimatePresence>
 
+<<<<<<< HEAD
+        <button onClick={() => go(index - 1)} aria-label="Previous banner"
+          className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-2.5 text-slate-700 opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+          <ChevronLeft className="h-5 w-5" />
+        </button>
+        <button onClick={() => go(index + 1)} aria-label="Next banner"
+          className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-2.5 text-slate-700 opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+          <ChevronRight className="h-5 w-5" />
+        </button>
+
+        <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
+=======
         {/* ---------- promotional products, on the right of the artwork ----------
             pointer-events-none on the wrapper so dragging and clicking the
             banner still works everywhere except on a card itself. */}
@@ -195,6 +233,7 @@ export default function BannerCarousel() {
         </button>
 
         <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2">
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
           {SLIDES.map((s, i) => (
             <button key={s.img} onClick={() => go(i)} aria-label={`Go to slide ${i + 1}`}
               className={`h-1.5 rounded-full transition-all duration-300 ${
@@ -202,6 +241,8 @@ export default function BannerCarousel() {
           ))}
         </div>
       </div>
+<<<<<<< HEAD
+=======
 
       {/* On phones the cards would cover the headline, so they run as a
           scrollable strip directly under the banner instead. */}
@@ -212,6 +253,7 @@ export default function BannerCarousel() {
           ))}
         </div>
       )}
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
     </section>
   );
 }

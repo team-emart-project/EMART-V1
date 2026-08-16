@@ -165,6 +165,8 @@ D:\EMART-V1\dotnet-backend\Emart.Api\obj\Debug\net10.0\refint\Emart.Api.dll
 D:\EMART-V1\dotnet-backend\Emart.Api\obj\Debug\net10.0\Emart.Api.pdb
 D:\EMART-V1\dotnet-backend\Emart.Api\obj\Debug\net10.0\Emart.Api.genruntimeconfig.cache
 D:\EMART-V1\dotnet-backend\Emart.Api\obj\Debug\net10.0\ref\Emart.Api.dll
+<<<<<<< HEAD
+=======
 E:\Emart-VFinal\dotnet-backend\Emart.Api\bin\Debug\net10.0\appsettings.Development.json
 E:\Emart-VFinal\dotnet-backend\Emart.Api\bin\Debug\net10.0\appsettings.json
 E:\Emart-VFinal\dotnet-backend\Emart.Api\bin\Debug\net10.0\Emart.Api.staticwebassets.endpoints.json
@@ -331,3 +333,4 @@ E:\Emart-VFinal\dotnet-backend\Emart.Api\obj\Debug\net10.0\refint\Emart.Api.dll
 E:\Emart-VFinal\dotnet-backend\Emart.Api\obj\Debug\net10.0\Emart.Api.pdb
 E:\Emart-VFinal\dotnet-backend\Emart.Api\obj\Debug\net10.0\Emart.Api.genruntimeconfig.cache
 E:\Emart-VFinal\dotnet-backend\Emart.Api\obj\Debug\net10.0\ref\Emart.Api.dll
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb

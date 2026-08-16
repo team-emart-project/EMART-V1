@@ -35,7 +35,11 @@ export default function CategoryCircles({ categories = [], loading }) {
           >
             <Link to={`/categories/${cat.catmasterId}`}
               className="group flex w-[76px] shrink-0 flex-col items-center gap-2 sm:w-[88px]">
+<<<<<<< HEAD
+              <span className="relative flex h-[68px] w-[68px] items-center justify-center overflow-hidden rounded-full bg-slate-50 ring-1 ring-slate-200 transition-all duration-300 group-hover:-translate-y-1 group-hover:ring-2 group-hover:ring-brand-400 sm:h-20 sm:w-20">
+=======
               <span className="relative flex h-[68px] w-[68px] items-center justify-center overflow-hidden rounded-full bg-brand-50 ring-1 ring-brand-100 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-lg group-hover:shadow-brand-600/20 group-hover:ring-2 group-hover:ring-brand-500 sm:h-20 sm:w-20">
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
                 <img src={productImage(cat.catImagePath, cat.catName)} alt=""
                   loading="lazy"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"

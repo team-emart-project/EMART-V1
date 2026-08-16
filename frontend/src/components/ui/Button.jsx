@@ -13,6 +13,15 @@ import { cn } from '@/utils/formatters';
  * forwarding whileTap to a <Link> would spray unknown attributes onto the DOM
  * and log React warnings.
  */
+<<<<<<< HEAD
+const VARIANTS = {
+  primary: 'bg-brand-600 text-white hover:bg-brand-700 shadow-sm shadow-brand-600/20',
+  accent: 'bg-accent-500 text-white hover:bg-accent-600 shadow-sm shadow-accent-500/25',
+  outline: 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 hover:border-slate-400',
+  ghost: 'text-slate-600 hover:bg-slate-100',
+  danger: 'bg-rose-600 text-white hover:bg-rose-700',
+  subtle: 'bg-brand-50 text-brand-700 hover:bg-brand-100',
+=======
 /**
  * `primary` carries the house emerald -> teal -> lime gradient rather than a
  * flat fill: it is the one control that should look like the brand. Every
@@ -26,6 +35,7 @@ const VARIANTS = {
   ghost: 'text-slate-600 hover:bg-brand-50 hover:text-brand-700',
   danger: 'bg-rose-600 text-white hover:bg-rose-700',
   subtle: 'bg-brand-50 text-brand-800 hover:bg-brand-100',
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
 };
 
 const SIZES = {

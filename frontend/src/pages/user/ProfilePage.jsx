@@ -60,7 +60,11 @@ export default function ProfilePage() {
           ) : (
             <>
               <div className="mb-6 flex flex-wrap items-center gap-3 border-b border-slate-100 pb-5">
+<<<<<<< HEAD
+                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-600 text-lg font-bold text-white">
+=======
                 <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-gradient text-lg font-bold text-white shadow-md shadow-brand-600/25">
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
                   {user.firstName?.[0]?.toUpperCase()}
                 </span>
                 <div>

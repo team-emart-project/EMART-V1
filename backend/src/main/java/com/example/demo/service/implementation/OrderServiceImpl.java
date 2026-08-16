@@ -1,9 +1,14 @@
 package com.example.demo.service.implementation;
 
+<<<<<<< HEAD
+import com.example.demo.dto.request.CheckoutRequest;
+import com.example.demo.dto.response.OrderResponse;
+=======
 import com.example.demo.client.dto.OrderEmailPayload;
 import com.example.demo.dto.request.CheckoutRequest;
 import com.example.demo.dto.response.OrderResponse;
 import com.example.demo.event.OrderPlacedEvent;
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
 import com.example.demo.entity.*;
 import com.example.demo.enums.CardStatus;
 import com.example.demo.enums.CartStatus;
@@ -25,7 +30,10 @@ import com.example.demo.response.PageResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+<<<<<<< HEAD
+=======
 import org.springframework.context.ApplicationEventPublisher;
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -56,6 +64,8 @@ public class OrderServiceImpl implements OrderService {
     private final CardholderService cardholderService;
     private final PricingService pricingService;
 
+<<<<<<< HEAD
+=======
     /**
      * How this service tells the rest of the application an order was placed,
      * without knowing (or caring) who is listening. Today that is one email
@@ -64,6 +74,7 @@ public class OrderServiceImpl implements OrderService {
      */
     private final ApplicationEventPublisher eventPublisher;
 
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
     // NO TAX. The customer is charged exactly the price shown on the product
     // card, so there is no tax rate to configure and total == subtotal.
 
@@ -108,8 +119,12 @@ public class OrderServiceImpl implements OrderService {
                             InvoicePdfGenerator invoicePdfGenerator,
                             SecurityUtils securityUtils,
                             CardholderService cardholderService,
+<<<<<<< HEAD
+                            PricingService pricingService) {
+=======
                             PricingService pricingService,
                             ApplicationEventPublisher eventPublisher) {
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
         this.ordersRepository = ordersRepository;
         this.cartRepository = cartRepository;
         this.cartItemRepository = cartItemRepository;
@@ -122,7 +137,10 @@ public class OrderServiceImpl implements OrderService {
         this.securityUtils = securityUtils;
         this.cardholderService = cardholderService;
         this.pricingService = pricingService;
+<<<<<<< HEAD
+=======
         this.eventPublisher = eventPublisher;
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
     }
 
     // ------------------------------------------------------------------
@@ -180,6 +198,9 @@ public class OrderServiceImpl implements OrderService {
         log.info("Placed orderNo={} for userId={} total={}",
                 saved.getOrderNo(), user.getUserId(), saved.getTotalAmount());
 
+<<<<<<< HEAD
+        return orderMapper.toResponse(saved, null);
+=======
         OrderResponse response = orderMapper.toResponse(saved, null);
 
         // Hand the order to the notification service (Module: email
@@ -192,6 +213,7 @@ public class OrderServiceImpl implements OrderService {
                 new OrderPlacedEvent(OrderEmailPayload.from(response, user.getEmail())));
 
         return response;
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
     }
 
     // ------------------------------------------------------------------

@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 /**
  * Three promotional tiles, the row Myntra runs below its deals strip.
  * Pure CSS gradients — no images to load, so nothing can 404.
+<<<<<<< HEAD
+=======
  *
  * DELIBERATELY OUTSIDE THE BRAND PALETTE
  * --------------------------------------
@@ -13,6 +15,7 @@ import { Link } from 'react-router-dom';
  * tiles cut from the brand ramp read as three UI panels rather than three
  * offers. So these keep their own vivid gradients, the same way the banner
  * artwork does. Do not "fix" them to match the theme.
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
  */
 const TILES = [
   { title: 'Fashion Fest',      sub: 'Min 40% off top brands',   to: '/products?search=shirt',
@@ -33,7 +36,11 @@ export default function PromoTiles() {
             viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.08 }}
           >
             <Link to={t.to}
+<<<<<<< HEAD
+              className={`group relative flex h-40 flex-col justify-end overflow-hidden rounded-2xl bg-gradient-to-br ${t.from} ${t.via} ${t.to2} p-6 text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl`}>
+=======
               className={`group relative flex h-40 flex-col justify-end overflow-hidden rounded-2xl bg-gradient-to-br ${t.from} ${t.via} ${t.to2} p-6 text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-slate-900/25`}>
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
               <span className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/15" aria-hidden />
               <span className="absolute -bottom-10 -left-6 h-32 w-32 rounded-full bg-white/10" aria-hidden />
               <span className="relative">

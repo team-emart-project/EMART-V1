@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dotnet-backend",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "--project", "dotnet-backend/Emart.Api", "--no-launch-profile"],
+      "port": 8080
+    },
+    {
+      "name": "frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "frontend", "run", "dev"],
+      "port": 5173
+    }
+  ]
+}

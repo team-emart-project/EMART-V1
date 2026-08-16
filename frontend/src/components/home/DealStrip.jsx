@@ -29,7 +29,11 @@ export default function DealStrip({ products = [], loading }) {
     <section className="bg-white py-8">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="overflow-hidden rounded-2xl border border-slate-200">
+<<<<<<< HEAD
+          <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/70 px-5 py-3.5">
+=======
           <div className="flex items-center justify-between border-b border-brand-100 bg-gradient-to-r from-brand-50 via-brand-50/60 to-accent-500/10 px-5 py-3.5">
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
             <div className="flex items-baseline gap-3">
               <h2 className="text-lg font-extrabold text-slate-900">Deals of the Day</h2>
               <span className="hidden text-xs font-medium text-slate-500 sm:block">
@@ -37,7 +41,11 @@ export default function DealStrip({ products = [], loading }) {
               </span>
             </div>
             <Link to="/products"
+<<<<<<< HEAD
+              className="group inline-flex items-center gap-1 rounded-lg bg-brand-600 px-3.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-brand-700">
+=======
               className="group inline-flex items-center gap-1 rounded-lg bg-brand-gradient px-3.5 py-1.5 text-xs font-semibold text-white transition-all hover:brightness-110 hover:shadow-md hover:shadow-brand-600/30">
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
               View all
               <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
             </Link>
@@ -61,7 +69,11 @@ export default function DealStrip({ products = [], loading }) {
                   <p className="line-clamp-2 min-h-[2.25rem] text-xs font-medium text-slate-700 group-hover:text-brand-600">
                     {p.prodName}
                   </p>
+<<<<<<< HEAD
+                  <p className="mt-1.5 text-sm font-bold text-emerald-600">
+=======
                   <p className="mt-1.5 text-sm font-bold text-accent-700">
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
                     {Math.round(Number(p.discountPercentage))}% OFF
                   </p>
                   <p className="text-[11px] text-slate-400">

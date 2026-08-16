@@ -15,7 +15,11 @@ export default function RatingBadge({ rating, count, size = 'sm' }) {
   return (
     <span className="inline-flex items-center gap-1.5">
       <span className={`inline-flex items-center gap-0.5 rounded font-semibold text-white ${pad} ${
+<<<<<<< HEAD
+        good ? 'bg-emerald-600' : 'bg-amber-500'}`}>
+=======
         good ? 'bg-brand-600' : 'bg-amber-500'}`}>
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
         {value.toFixed(1)}
         <Star className="h-2.5 w-2.5 fill-white" />
       </span>
