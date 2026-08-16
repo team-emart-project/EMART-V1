@@ -64,7 +64,11 @@ export const statusColor = (status) => {
     FAILED: 'bg-rose-100 text-rose-700',
     REJECTED: 'bg-rose-100 text-rose-700',
     APPROVED: 'bg-emerald-100 text-emerald-700',
+<<<<<<< HEAD
     SHIPPED: 'bg-indigo-100 text-indigo-700',
+=======
+    SHIPPED: 'bg-teal-100 text-teal-800',
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
     DELIVERED: 'bg-emerald-100 text-emerald-700',
   };
   return map[status] || 'bg-slate-100 text-slate-700';
@@ -110,10 +114,20 @@ export const productImage = (path, name = 'product') => {
 export const placeholderImage = (name = 'e-MART') => {
   const label = String(name || 'e-MART').slice(0, 22);
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+<<<<<<< HEAD
 <rect width="600" height="600" fill="#eef2ff"/>
 <circle cx="300" cy="250" r="90" fill="#ffffff" opacity="0.7"/>
 <path d="M270 220h60v60h-60z" fill="none" stroke="#4f46e5" stroke-width="6"/>
 <text x="300" y="400" font-family="Inter,sans-serif" font-size="30" font-weight="600"
       fill="#4f46e5" text-anchor="middle">${label.replace(/[<>&]/g, '')}</text></svg>`;
+=======
+<defs><linearGradient id="p" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0%" stop-color="#ecfdf5"/><stop offset="100%" stop-color="#d1fae5"/></linearGradient></defs>
+<rect width="600" height="600" fill="url(#p)"/>
+<circle cx="300" cy="250" r="90" fill="#ffffff" opacity="0.7"/>
+<path d="M270 220h60v60h-60z" fill="none" stroke="#059669" stroke-width="6"/>
+<text x="300" y="400" font-family="Inter,sans-serif" font-size="30" font-weight="600"
+      fill="#0f766e" text-anchor="middle">${label.replace(/[<>&]/g, '')}</text></svg>`;
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 };

@@ -8,6 +8,10 @@ using Emart.Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+<<<<<<< HEAD
+=======
+using Microsoft.Extensions.Options;
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
@@ -101,6 +105,36 @@ builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IEmartCardService, EmartCardService>();
 
 // ---------------------------------------------------------------------------
+<<<<<<< HEAD
+=======
+// backend-email-microservice
+//
+// Order confirmation + invoice emails are NOT sent from this API. OrderService
+// POSTs the finished order to the notification service after the checkout
+// transaction commits — see OrderService.PlaceOrderAsync.
+//
+// AddHttpClient, not `new HttpClient()`: the factory pools and recycles the
+// underlying handler. A long-lived HttpClient holds its DNS resolution
+// forever, and a new one per call leaks sockets in TIME_WAIT.
+// ---------------------------------------------------------------------------
+builder.Services.Configure<EmailServiceOptions>(
+    builder.Configuration.GetSection(EmailServiceOptions.SectionName));
+
+builder.Services.AddHttpClient<IEmailServiceClient, EmailServiceClient>((provider, client) =>
+{
+    var emailOptions = provider.GetRequiredService<IOptions<EmailServiceOptions>>().Value;
+
+    client.BaseAddress = new Uri(emailOptions.BaseUrl);
+    client.Timeout = TimeSpan.FromSeconds(emailOptions.TimeoutSeconds);
+
+    if (!string.IsNullOrWhiteSpace(emailOptions.ApiKey))
+    {
+        client.DefaultRequestHeaders.Add(EmailServiceClient.ApiKeyHeader, emailOptions.ApiKey);
+    }
+});
+
+// ---------------------------------------------------------------------------
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
 // JWT
 //
 // Both the signing key here and the one AuthService signs with are read from

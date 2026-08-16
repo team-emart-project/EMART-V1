@@ -27,7 +27,11 @@ export default function Pagination({ page = 0, totalPages = 1, onChange }) {
           aria-current={p === page ? 'page' : undefined}
           className={cn(
             'h-9 min-w-9 rounded-lg px-3 text-sm font-medium transition-colors',
+<<<<<<< HEAD
             p === page ? 'bg-brand-600 text-white' : 'text-slate-600 hover:bg-slate-100'
+=======
+            p === page ? 'bg-brand-gradient text-white shadow-sm shadow-brand-600/25' : 'text-slate-600 hover:bg-slate-100'
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
           )}
         >
           {p + 1}

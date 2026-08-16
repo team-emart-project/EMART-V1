@@ -13,7 +13,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Emart.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ad6c53e51839ce9bb57876fccc48dc17d367b444")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
 [assembly: System.Reflection.AssemblyProductAttribute("Emart.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Emart.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

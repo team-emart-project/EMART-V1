@@ -1,0 +1,19 @@
+# Everything here would either bloat the build context or get rebuilt anyway.
+target/
+.mvn/
+mvnw
+mvnw.cmd
+.settings/
+.classpath
+.project
+.factorypath
+.metadata/
+*.lnk
+
+# Seed/schema SQL is mounted straight into the MySQL container by compose,
+# it is not needed inside the backend image.
+*.sql
+
+# Docs
+*.md
+*.postman_collection.json

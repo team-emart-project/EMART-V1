@@ -82,7 +82,11 @@ export default function Footer() {
                   placeholder="you@example.com"
                   className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm transition-all placeholder:text-slate-400 focus:border-brand-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-brand-500/10" />
                 <button type="submit" aria-label="Subscribe"
+<<<<<<< HEAD
                   className="shrink-0 rounded-xl bg-slate-900 px-3.5 text-white transition-colors hover:bg-brand-600">
+=======
+                  className="shrink-0 rounded-xl bg-brand-gradient px-3.5 text-white transition-all hover:brightness-110">
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
                   <Send className="h-4 w-4" />
                 </button>
               </div>

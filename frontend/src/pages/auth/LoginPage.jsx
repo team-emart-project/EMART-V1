@@ -38,7 +38,11 @@ export default function LoginPage() {
         transition={{ duration: 0.4 }} className="w-full max-w-md"
       >
         <div className="mb-6 text-center">
+<<<<<<< HEAD
           <span className="mb-3 inline-flex rounded-2xl bg-brand-600 p-3">
+=======
+          <span className="mb-3 inline-flex rounded-2xl bg-brand-gradient p-3 shadow-lg shadow-brand-600/25">
+>>>>>>> d5373e2ef28bd43e67b12b3e8d1dcff71723abeb
             <Store className="h-6 w-6 text-white" />
           </span>
           <h1 className="text-2xl font-bold text-slate-900">Welcome back</h1>
