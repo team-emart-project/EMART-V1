@@ -1,7 +1,14 @@
 package com.example.demo.service.implementation;
 
+<<<<<<< HEAD
 import com.example.demo.dto.request.CheckoutRequest;
 import com.example.demo.dto.response.OrderResponse;
+=======
+import com.example.demo.client.dto.OrderEmailPayload;
+import com.example.demo.dto.request.CheckoutRequest;
+import com.example.demo.dto.response.OrderResponse;
+import com.example.demo.event.OrderPlacedEvent;
+>>>>>>> 679d5799ce56e5056c2968942f014f497f4b21a6
 import com.example.demo.entity.*;
 import com.example.demo.enums.CardStatus;
 import com.example.demo.enums.CartStatus;
@@ -23,6 +30,10 @@ import com.example.demo.response.PageResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+<<<<<<< HEAD
+=======
+import org.springframework.context.ApplicationEventPublisher;
+>>>>>>> 679d5799ce56e5056c2968942f014f497f4b21a6
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -53,6 +64,17 @@ public class OrderServiceImpl implements OrderService {
     private final CardholderService cardholderService;
     private final PricingService pricingService;
 
+<<<<<<< HEAD
+=======
+    /**
+     * How this service tells the rest of the application an order was placed,
+     * without knowing (or caring) who is listening. Today that is one email
+     * listener; tomorrow it could also be an SMS or an analytics hook, and none
+     * of them would need a line changed here.
+     */
+    private final ApplicationEventPublisher eventPublisher;
+
+>>>>>>> 679d5799ce56e5056c2968942f014f497f4b21a6
     // NO TAX. The customer is charged exactly the price shown on the product
     // card, so there is no tax rate to configure and total == subtotal.
 
@@ -97,7 +119,12 @@ public class OrderServiceImpl implements OrderService {
                             InvoicePdfGenerator invoicePdfGenerator,
                             SecurityUtils securityUtils,
                             CardholderService cardholderService,
+<<<<<<< HEAD
                             PricingService pricingService) {
+=======
+                            PricingService pricingService,
+                            ApplicationEventPublisher eventPublisher) {
+>>>>>>> 679d5799ce56e5056c2968942f014f497f4b21a6
         this.ordersRepository = ordersRepository;
         this.cartRepository = cartRepository;
         this.cartItemRepository = cartItemRepository;
@@ -110,6 +137,10 @@ public class OrderServiceImpl implements OrderService {
         this.securityUtils = securityUtils;
         this.cardholderService = cardholderService;
         this.pricingService = pricingService;
+<<<<<<< HEAD
+=======
+        this.eventPublisher = eventPublisher;
+>>>>>>> 679d5799ce56e5056c2968942f014f497f4b21a6
     }
 
     // ------------------------------------------------------------------
@@ -167,7 +198,22 @@ public class OrderServiceImpl implements OrderService {
         log.info("Placed orderNo={} for userId={} total={}",
                 saved.getOrderNo(), user.getUserId(), saved.getTotalAmount());
 
+<<<<<<< HEAD
         return orderMapper.toResponse(saved, null);
+=======
+        OrderResponse response = orderMapper.toResponse(saved, null);
+
+        // Hand the order to the notification service (Module: email
+        // microservice). This is a PUBLISH, not a call: the payload is built
+        // here, inside the transaction, while the User is still attached — but
+        // OrderPlacedEmailListener does not run until the commit succeeds, and
+        // then on its own thread. Checkout neither waits for the email nor
+        // fails because of it.
+        eventPublisher.publishEvent(
+                new OrderPlacedEvent(OrderEmailPayload.from(response, user.getEmail())));
+
+        return response;
+>>>>>>> 679d5799ce56e5056c2968942f014f497f4b21a6
     }
 
     // ------------------------------------------------------------------
